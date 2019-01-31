@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 #include "list.h"
+
 #ifndef ASS2_BSTREE_H
 #define ASS2_BSTREE_H
 

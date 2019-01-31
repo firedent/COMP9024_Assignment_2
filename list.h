@@ -3,8 +3,7 @@
 //
 
 #include <stdbool.h>
-#include <string.h>
-#include <stdlib.h>
+
 #ifndef ASS2_LIST_H
 #define ASS2_LIST_H
 

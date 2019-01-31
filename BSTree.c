@@ -4,13 +4,13 @@
 
 // Binary Search Tree ADT implementation ... COMP9024 17s2
 
+#include "BSTree.h"
+#include "stack.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 #include <assert.h>
-#include "BSTree.h"
-#include "stack.h"
 
 // create a new empty Tree
 Tree newTree() {

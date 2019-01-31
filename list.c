@@ -4,6 +4,9 @@
 
 #include "list.h"
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
 typedef struct Node {
     List_Value_Type value;
     struct Node *next;
