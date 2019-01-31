@@ -53,11 +53,10 @@ int searchVNode(Graph g, char *name){
     return -1;
 }
 
-int existEdge(Graph g, char *sourceName, int destinationId){
-    VNode *VNode = getVNode(g, destinationId);
-    ArcNode *Edges = VNode->first;
+int existEdge(Graph g, int sourceId, int destinationId){
+    ArcNode *Edges = getVNode(g, destinationId)->first;
     while(Edges != NULL){
-        if(strcmp(getVNode(g, Edges->adjvex)->url_name,sourceName) == 0){
+        if(Edges->adjvex == sourceId){
             return 1;
         }
         Edges = Edges->next;
@@ -68,16 +67,20 @@ void addEdge(Graph g, char *destinationName, int sourceId){
     VNode *S_VNode = getVNode(g, sourceId);
     int destinationId = searchVNode(g, destinationName);
     VNode *D_VNode = getVNode(g, destinationId);
-//    if(existEdge(g, sourceName, destinationId) != 1){
-//        newArcNode(destinationId)->next = VNode->first;
-//        VNode->first = newArcNode(destinationId);
-//        VNode->inDegree++;
-//    }
-    ArcNode *ArcNode = newArcNode(sourceId);
-    ArcNode->next = D_VNode->first;
-    D_VNode->first = ArcNode;
-    D_VNode->inDegree += 1;
-    S_VNode->outDegree += 1;
+
+//    ignore self-loop
+    if(destinationId == sourceId){
+        return;
+    }
+
+//    ignore parallel edges
+    if(existEdge(g, sourceId,destinationId) != 1){
+        ArcNode *ArcNode = newArcNode(sourceId);
+        ArcNode->next = D_VNode->first;
+        D_VNode->first = ArcNode;
+        D_VNode->inDegree += 1;
+        S_VNode->outDegree += 1;
+    }
 }
 
 int getVertexNum(Graph g){
@@ -88,9 +91,11 @@ void freeGraph(Graph g){
     if (g == NULL) return;
     for(int i = 0; i<g->nV;i++){
         ArcNode *nextFree = g->vertexes[i].first;
-        while (nextFree != NULL){
+        ArcNode *curFree = NULL;
+        while (nextFree!= NULL){
+            curFree = nextFree;
             free(nextFree);
-            nextFree = nextFree->next;
+            nextFree = curFree->next;
         }
     }
     free(g->vertexes);

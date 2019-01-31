@@ -2,14 +2,12 @@
 // Created by 张世超 on 2019-01-29.
 //
 
-#ifndef ASS2_GRAPH_H
-#define ASS2_GRAPH_H
-
-#endif //ASS2_GRAPH_H
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+#ifndef ASS2_GRAPH_H
+#define ASS2_GRAPH_H
 
 typedef struct GraphRep *Graph;
 
@@ -41,3 +39,5 @@ void addEdge(Graph g, char *sourceName, int destinationId);
 int getVertexNum(Graph g);
 
 void freeGraph(Graph g);
+
+#endif //ASS2_GRAPH_H

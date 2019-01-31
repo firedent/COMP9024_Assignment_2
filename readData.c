@@ -10,6 +10,8 @@
 //urls_list_pointer is a pointer pointing to a array of  URL string
 void readSection1(char *, Graph);
 
+void readSection2(char *, Tree *);
+
 char *strip(char *);
 
 int GetCollection(char ***urls_list_pointer) {
@@ -75,8 +77,13 @@ Graph GetGraph(char **url_list, int url_list_len) {
     return g;
 }
 
-void GetInvertedList(){
-
+Tree GetInvertedList(char **url_list, int url_list_len){
+    Tree t = newTree();
+    for(int i = 0; i<url_list_len; i++){
+//        printf("%s\n",url_list[i]);
+        readSection2(url_list[i], &t);
+    }
+    return t;
 }
 
 void readSection1(char *url_name, Graph g) {
@@ -166,6 +173,90 @@ void readSection1(char *url_name, Graph g) {
             addEdge(g, url_list[i],VNode_ID);
         }
     }
+}
+
+void readSection2(char *url_name, Tree *t){
+    char delim[2] = " ";
+    char *token;
+    char buffer[MAXSTRING];
+    char line[MAXSTRING];
+    FILE *f;
+    char file_name[strlen(url_name)+4+1];
+    strcpy(file_name,url_name);
+    strcat(file_name,".txt");
+    if ((f = fopen(file_name, "r")) == NULL) {
+        printf("Error!\n");
+        exit(0);
+    }
+
+    int meetStart = 0;
+    int meetEnd = 0;
+    while (fgets(line, MAXSTRING, f) != NULL) {
+        /* first token */
+        token = strtok(line, delim);
+
+        if (meetStart == 0) {
+            char *s_list[2];
+            int i = 0;
+            while (token != NULL && i < 2) {
+                s_list[i] = strip(token);
+//                printf("\ttoken: >|%s|<\n", s_list[i]);
+                token = strtok(NULL, delim);
+                i++;
+            }
+            if (i == 2 && strcmp(s_list[0], "#start") == 0 && strcmp(s_list[1], "Section-2") == 0) {
+//                printf("遇到start\n");
+                meetStart = 1;
+            } else {
+//                printf("没遇到，跳过\n");
+            }
+        } else {
+            if(meetEnd == 1){
+//                printf("发现end\n");
+                break;
+            }
+            while (token != NULL) {
+                if(strcmp(token, "#end") == 0 && strcmp(strip(strtok(NULL, delim)), "Section-2") == 0){
+                    meetEnd = 1;
+                    break;
+                }
+//                跳过空行
+                if (strcmp(token, "\n") != 0) {
+//                  ignore ',' '.' ';' '?' '\n'
+                    int t_i = 0;
+                    int b_i = 0;
+                    Item it;
+                    while(true){
+                        if (token[t_i] == '\0'){
+                            buffer[b_i] = '\0';
+                            break;
+                        }
+                        if (token[t_i] == '\n'){
+                            t_i += 1;
+                            continue;
+                        }
+//                        only the last char of string is ',', ';', ';' or '?'
+                        if ((token[t_i+1] == '\n'|| token[t_i+1] == '\0')&&(token[t_i] == ','||token[t_i] == '.'||token[t_i] == ';'||token[t_i] == '?')){
+                            buffer[b_i] = '\0';
+                            break;
+                        }
+                        buffer[b_i] = (char)tolower(token[t_i]);
+                        t_i += 1;
+                        b_i += 1;
+                    }
+
+                    it.url = url_name;
+                    it.word = (char *)malloc(sizeof(char)*(b_i+1));
+                    strncpy(it.word,buffer,b_i+1);
+//                    printf(">|%s|<\n",it.word);
+                    TreeInsert(t,it);
+
+                }
+                token = strtok(NULL, delim);
+            }
+        }
+    }
+    fclose(f);
 }
 
 char *strip(char *string) {
