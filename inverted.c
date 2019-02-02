@@ -86,5 +86,5 @@ int main(int argc, char **argv){
     }
     InOrder(t, &visit);
     fclose(f);
-    return 1;
+    return 0;
 }

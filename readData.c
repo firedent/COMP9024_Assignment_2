@@ -263,18 +263,13 @@ char *strip(char *string) {
     if(string == NULL){
         return NULL;
     }
-    size_t url_len = strlen(string);
-    if (strcmp(&string[url_len - 1], "\n") == 0) {
-        int i = 0;
-        char tmp[url_len];
-        while (i < url_len - 1) {
-            tmp[i] = string[i];
-            i++;
+    int i = 0;
+    while (string[i] != '\0') {
+        if(string[i] == '\n'){
+            string[i] = '\0';
+            break;
         }
-        tmp[url_len - 1] = 0;
-        strcpy(string, tmp);
-        return string;
-    } else {
-        return string;
+        i++;
     }
+    return string;
 }

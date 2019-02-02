@@ -104,7 +104,7 @@ int main(int argc, char **argv) {
     }
     char **url_list;
     int url_num;
-    char file_name[] = "pagerankList";
+    char file_name[] = "pagerankList.txt";
     url_num = GetCollection(&url_list);
 //    printf("collection: %d\n",url_num);
 
@@ -147,5 +147,6 @@ int main(int argc, char **argv) {
     fclose(f);
     freeGraph(g);
     free(List_Urls_PageRanks);
+    return 0;
 }
 

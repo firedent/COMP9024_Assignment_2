@@ -36,5 +36,17 @@ void TreeInsert(Tree *, Item);    // insert a new item into a Tree
 
 void InOrder(Tree , void (*)(Tree));
 
+int TreeNumNodes(Tree t);
+
+Node *TreeSearch(Tree, char *);
+
+Tree rotateRight(Tree);
+
+Tree rotateLeft(Tree);
+
+Tree partition(Tree, int);
+
+Tree rebalance(Tree);
+
 #endif //ASS2_BSTREE_H
 
