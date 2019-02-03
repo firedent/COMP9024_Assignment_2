@@ -41,7 +41,7 @@ double *calaulatePageRank(Graph g, double d, double diffPR, int maxiterations) {
             double sum = 0;
             ArcNode *reference = getVNode(g, i)->first;
             while (reference != NULL) {
-                sum += oldPR[reference->adjvex] / getVNode(g, reference->adjvex)->outDegree;
+                sum = sum + oldPR[reference->adjvex] / getVNode(g, reference->adjvex)->outDegree;
                 reference = reference->next;
             }
             newPR[i] = (1 - d) / N + d * sum;
@@ -117,14 +117,12 @@ int main(int argc, char **argv) {
     for (int i = 0; i < url_num; i++) {
         VNode *VNode = getVNode(g, i);
 //        printf("\nNode %s:\n\tout: %d\n\tin: %d\n", VNode->url_name, VNode->outDegree, VNode->inDegree);
-//        printf("\tIn:\n");
         ArcNode *an = VNode->first;
         while (an != NULL) {
 //            printf("\t\t%s\n", getVNode(g, an->adjvex)->url_name);
             an = an->next;
         }
     }
-    char *end;
     double *List_Urls_PageRanks = calaulatePageRank(g, strtod(argv[1], NULL), strtod(argv[2], NULL), (int)strtol(argv[3], NULL, 10));
 
     VNode *listPointerVNode[url_num];

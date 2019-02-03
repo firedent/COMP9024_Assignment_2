@@ -12,8 +12,6 @@ void readSection1(char *, Graph);
 
 void readSection2(char *, Tree *);
 
-char *strip(char *);
-
 int GetCollection(char ***urls_list_pointer) {
     char **urls_list = NULL;
     char delim[2] = " ";
@@ -101,7 +99,7 @@ void readSection1(char *url_name, Graph g) {
     }
 
     int url_num = 0;
-    int lnCount = 0;
+//    int lnCount = 0;
     int meetStart = 0;
     int meetEnd = 0;
     while (fgets(line, MAXSTRING, f) != NULL) {
@@ -114,7 +112,7 @@ void readSection1(char *url_name, Graph g) {
             char *s_list[2];
             int i = 0;
             while (token != NULL && i < 2) {
-                s_list[i] = strip(token);
+                s_list[i] = stripBackslashN(token);
 //                printf("\ttoken: >|%s|<\n", s_list[i]);
                 token = strtok(NULL, delim);
                 i++;
@@ -131,7 +129,7 @@ void readSection1(char *url_name, Graph g) {
                 break;
             }
             while (token != NULL) {
-                if(strcmp(token, "#end") == 0 && strcmp(strip(strtok(NULL, delim)), "Section-1") == 0){
+                if(strcmp(token, "#end") == 0 && strcmp(stripBackslashN(strtok(NULL, delim)), "Section-1") == 0){
                     meetEnd = 1;
                     break;
                 }
@@ -146,7 +144,7 @@ void readSection1(char *url_name, Graph g) {
                     // if the last char is \n, delete \n
                     size_t url_len = strlen(token);
                     if (strcmp(&token[url_len - 1], "\n") == 0) {
-//                       strip /n
+//                       stripBackslashN /n
                         int i = 0;
                         url_list[url_num] = (char *) malloc(sizeof(char) * url_len);
                         while (i < url_len - 1) {
@@ -172,6 +170,7 @@ void readSection1(char *url_name, Graph g) {
         for(int i = 0;i<url_num;i++){
             addEdge(g, url_list[i],VNode_ID);
         }
+//        printf("\n");
     }
 }
 
@@ -199,7 +198,7 @@ void readSection2(char *url_name, Tree *t){
             char *s_list[2];
             int i = 0;
             while (token != NULL && i < 2) {
-                s_list[i] = strip(token);
+                s_list[i] = stripBackslashN(token);
 //                printf("\ttoken: >|%s|<\n", s_list[i]);
                 token = strtok(NULL, delim);
                 i++;
@@ -216,7 +215,7 @@ void readSection2(char *url_name, Tree *t){
                 break;
             }
             while (token != NULL) {
-                if(strcmp(token, "#end") == 0 && strcmp(strip(strtok(NULL, delim)), "Section-2") == 0){
+                if(strcmp(token, "#end") == 0 && strcmp(stripBackslashN(strtok(NULL, delim)), "Section-2") == 0){
                     meetEnd = 1;
                     break;
                 }
@@ -259,7 +258,7 @@ void readSection2(char *url_name, Tree *t){
     fclose(f);
 }
 
-char *strip(char *string) {
+char *stripBackslashN(char *string) {
     if(string == NULL){
         return NULL;
     }

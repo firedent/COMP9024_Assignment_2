@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "readData.h"
 #include "BStree_double.h"
 
 #define MAXSTRING 1000
@@ -94,21 +95,6 @@ bool existIn(DTree searchTermsTree, char *string){
     return false;
 }
 
-char *strip(char *string) {
-    if(string == NULL){
-        return NULL;
-    }
-    int i = 0;
-    while (string[i] != '\0') {
-        if(string[i] == '\n'){
-            string[i] = '\0';
-            break;
-        }
-        i++;
-    }
-    return string;
-}
-
 DTree getUrlTreeWithPR() {
     FILE *f;
     char line[MAXSTRING];
@@ -159,7 +145,7 @@ DTree getUrlTreeWithMatchTime(DTree searchTerms, int searchTermsNum, int *urlMat
         printf("Error!\n");
         return (0);
     }
-    int lnCount = 0;
+//    int lnCount = 0;
     int alreadyFound = 0;
     DTree urlTreeWithSearchTermNum = DnewTree();
     while(fgets(line, MAXSTRING, f) != NULL)  {
@@ -179,8 +165,8 @@ DTree getUrlTreeWithMatchTime(DTree searchTerms, int searchTermsNum, int *urlMat
 
         /* iterate over the rest of the tokens */
         while( token != NULL ) {
-            char *strippedToken = strip(token);
-//            printf( "\tURL: >>>|%s|<<<\n", strip(strippedToken));
+            char *strippedToken = stripBackslashN(token);
+//            printf( "\tURL: >>>|%s|<<<\n", stripBackslashN(strippedToken));
             DTreeInsertKeyIncreaseValue(&urlTreeWithSearchTermNum, strippedToken, urlMatchedTime);
             token = strtok(NULL, PAGERANK_FILE_DELIM);
         }
@@ -229,7 +215,7 @@ int main(int argc, char **argv){
 
     order(urlPointerArray, urlNum);
 //    printf("---------\n");
-    for(int i = 0; i<urlNum || i < 30; i++){
+    for(int i = 0; i<urlNum && i < 30; i++){
         printf("%s\n",urlPointerArray[i]->name);
 //        printf("name: %s PR: %f, time: %f\n",urlPointerArray[i]->name, urlPointerArray[i]->pagerank, urlPointerArray[i]->times);
     }

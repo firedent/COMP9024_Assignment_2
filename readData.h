@@ -18,4 +18,6 @@ Graph GetGraph(char **, int);
 
 Tree GetInvertedList(char **, int);
 
+char *stripBackslashN(char *);
+
 #endif //ASS2_READDATA_H

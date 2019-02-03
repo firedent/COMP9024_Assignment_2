@@ -67,14 +67,14 @@ void addEdge(Graph g, char *destinationName, int sourceId){
     VNode *S_VNode = getVNode(g, sourceId);
     int destinationId = searchVNode(g, destinationName);
     VNode *D_VNode = getVNode(g, destinationId);
-
+//    printf("add %s -> %s   ",S_VNode->url_name, destinationName);
 //    ignore self-loop
     if(destinationId == sourceId){
         return;
     }
-
 //    ignore parallel edges
     if(existEdge(g, sourceId,destinationId) != 1){
+//        printf("add %s -> %s   ",S_VNode->url_name, destinationName);
         ArcNode *ArcNode = newArcNode(sourceId);
         ArcNode->next = D_VNode->first;
         D_VNode->first = ArcNode;

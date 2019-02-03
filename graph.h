@@ -34,7 +34,7 @@ VNode* getVNode(Graph g, int index);
 
 int searchVNode(Graph g, char *name);
 
-void addEdge(Graph g, char *sourceName, int destinationId);
+void addEdge(Graph g, char *destinationName, int sourceId);
 
 int getVertexNum(Graph g);
 
