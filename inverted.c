@@ -77,7 +77,7 @@ void visit(Tree tree){
 int main(int argc, char **argv){
     char **List_of_Urls;
     int urlNum;
-    char *file_name = "invertedindex.txt";
+    char *file_name = "invertedIndex.txt";
     urlNum = GetCollection(&List_of_Urls);
     Tree t = GetInvertedList(List_of_Urls, urlNum);
     if ((f = fopen(file_name, "w")) == NULL) {
